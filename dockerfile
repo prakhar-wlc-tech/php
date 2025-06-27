@@ -1,9 +1,10 @@
+# Use official PHP 8.2 Apache base image
 FROM php:8.2-apache
 
-# Update package lists and upgrade system packages to reduce vulnerabilities
+# Update packages and clean cache
 RUN apt-get update && apt-get upgrade -y && apt-get clean
 
-# Enable mod_rewrite
+# Enable Apache mod_rewrite for clean URLs
 RUN a2enmod rewrite
 
 # Allow .htaccess overrides

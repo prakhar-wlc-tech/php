@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   php:
     build: .
@@ -5,7 +7,13 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/html
+      - ./src/public:/var/www/html
+      - ./src/config:/var/www/private/config
+      - ./src/controllers:/var/www/private/controllers
+      - ./src/lib:/var/www/private/lib
+      - ./src/router:/var/www/private/router
+      - ./src/views:/var/www/private/views
+      - ./src/utility:/var/www/private/utility
     depends_on:
       - db
 

@@ -11,5 +11,5 @@ function dd($value)
 
 function base_path($path = '')
 {
-    return __DIR__ . '/../' . $path;
+    return BASE_PATH . ltrim($path, '/');
 }

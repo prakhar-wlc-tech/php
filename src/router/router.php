@@ -10,21 +10,19 @@ $uri = parse_url($_SERVER["REQUEST_URI"])['path'];
 //     echo "404 | Page Not Found";
 // }
 
-$routes = [
-    '/' => 'controllers/index.php',
-    '/about' => 'controllers/about.php'
-];
+
+$routes = require base_path('router/routes.php');
 function abort($code = 404, $message = 'page not found')
 {
     http_response_code($code);
-    require "views/error.php";
+    require base_path("views/error.php");
     die();
 }
 
 function routeToController($uri, $routes)
 {
     if (array_key_exists($uri, $routes)) {
-        require $routes[$uri];
+        require base_path($routes[$uri]);
     } else {
         abort();
     }

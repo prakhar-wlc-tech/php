@@ -1,4 +1,5 @@
 <?php
+// echo "prakhar";
 return [
     "database" => [
         "host" => "db",
