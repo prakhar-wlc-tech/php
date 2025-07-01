@@ -1,4 +1,7 @@
 <?php
+
+namespace lib; // similar to folder structure. example : music folder => rock, pop, etc. now where we have to use Database class, we can use it like this: use lib\Database;
+use PDO; // PHP Data Objects (PDO) is a database access layer providing a uniform method of access to multiple databases. It does not provide a database abstraction but allows for a uniform API for accessing different databases.
 class Database
 {
     public $connection;
@@ -18,7 +21,8 @@ class Database
 
         //one way to create dsn
         // $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};port={$config['port']};charset={$config['charset']}";
-
+       
+        // dd($config);
         // another way to create dsn
         $dsn = "mysql:" . http_build_query($config, '', arg_separator: ';');
 

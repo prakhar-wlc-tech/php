@@ -19,12 +19,12 @@ require_once BASE_PATH . "utility/utility.php";
 // $users = $statement->fetchAll();
 //$users = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+// use lib\Database; // similar to folder structure. example : music folder => rock, pop, etc. now where we have to use Database class, we can use it like this: use lib\Database;
+// require base_path("lib/Database.php");
 
-require base_path("lib/Database.php");
+// $config = require base_path("config/config.php");
 
-$config = require base_path("config/config.php");
-
-$db = new Database($config['database']);
+// $db = new Database($config['database']);
 
 // $id = $_GET['id'];
 
@@ -43,4 +43,18 @@ require base_path('utility/Response.php');
 // dd(Response::NOT_FOUND);
 
 require base_path('utility/validator.php');
-dd(Validator::email("user@gmail.com"));
+// dd(Validator::email("user@gmail.com"));
+
+require base_path("lib/bootstrap.php");
+require base_path('router/Router.php');
+$uri = parse_url($_SERVER["REQUEST_URI"])['path'];
+
+$router = new Router();
+
+$routes = require base_path('router/routes.php');
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+require base_path(
+    $router->route($uri, $method)
+);
