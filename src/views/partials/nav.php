@@ -20,8 +20,21 @@
             <a href="/" class="text-sm/6 font-semibold text-gray-900">home</a>
             <a href="/about" class="text-sm/6 font-semibold text-gray-900">About</a>
         </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+        <div class="hidden lg:flex lg:flex-1 gap-4 lg:justify-end">
+            <?php if ($_SESSION['user']['email'] ?? ''): ?>
+                <span class="text-sm/6 font-semibold text-gray-900"><?php echo $_SESSION['user']['email']; ?></span>
+            <?php else: ?>
+                <a href="/register" class="text-sm/6 font-semibold text-gray-900">Register <span
+                        aria-hidden="true">&rarr;</span></a>
+                <a href="/login" class="text-sm/6 font-semibold text-gray-900">Sign in <span
+                        aria-hidden="true">&rarr;</span></a>
+            <?php endif; ?>
+            <?php if ($_SESSION['user'] ?? false): ?>
+                <form action="/logout" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="text-sm/6 font-semibold text-gray-900">Logout</button>
+                </form>
+            <?php endif; ?>
         </div>
     </nav>
 </header>

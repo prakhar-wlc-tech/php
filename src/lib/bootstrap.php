@@ -26,4 +26,4 @@ App::setContainer($container);
 // both of these are same
 // $db = App::resolve('lib\Database');
 $db = App::resolve(Database::class);
-dd($db);
+// dd($db);

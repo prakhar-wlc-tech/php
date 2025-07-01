@@ -1,4 +1,7 @@
 <?php
+
+session_start(); // Start the session to use session variables if not then we won't be able to use session variables
+
 const BASE_PATH = "/var/www/private/";
 
 require_once BASE_PATH . "utility/utility.php";
@@ -52,6 +55,11 @@ $uri = parse_url($_SERVER["REQUEST_URI"])['path'];
 $router = new Router();
 
 $routes = require base_path('router/routes.php');
+
+// Handle HTTP method override (e.g., POST _method => DELETE)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method'])) {
+    $_SERVER['REQUEST_METHOD'] = strtoupper($_POST['_method']);
+}
 
 $method = $_SERVER['REQUEST_METHOD'];
 
