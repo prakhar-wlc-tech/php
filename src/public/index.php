@@ -6,6 +6,10 @@ const BASE_PATH = "/var/www/private/";
 
 require_once BASE_PATH . "utility/utility.php";
 
+require_once base_path('utility/Session.php');
+use Utility\Session;
+Session::unflash();
+
 // require_once base_path("router/router.php");
 // connection to database (Data Source Name)
 // $dsn = 'mysql:host=db;dbname=learnphp;port=3306;charset=utf8mb4';
@@ -66,3 +70,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 require base_path(
     $router->route($uri, $method)
 );
+
+
+//deleting flash session
+// unset($_SESSION['_flash']);
+// Session::unflash();

@@ -1,41 +1,37 @@
 <?php
 
-use lib\Database;
+require base_path('utility/forms/LoginForm.php');
+require base_path('utility/Authenticator.php');
+use Utility\Session;
 
 $email = $_POST['email'];
 $password = $_POST['password'];
-$errors = [];
 
-if (!Validator::email($email)) {
-    $errors['email'] = "Please provide a valid email address.";
+$form = new LoginForm();
+
+if ($form->validate($email, $password)) {
+
+    if ((new Authenticator)->attempt($email, $password)) {
+        redirect('/');
+    }
+    $form->addError('body', 'Invalid credentials. Please try again.');
+
 }
 
-if (!Validator::string($password)) {
-    $errors['password'] = "Password must be a valid password.";
-}
+//problem persist if we refressh the page, we post the data again and again. if we switch to another page, and then come back, it says document expired.
+// $errors = $form->getErrors();
+// require base_path('views/login.view.php');
+// exit();
 
-if (!empty($errors)) {
-    require base_path('views/login.view.php');
-    exit();
-}
+// so using PRG(POST/REDIRECT/GET) pattern to handle this issue. however, we still have one issue to handle, that is, if authentication fails and we switch to another page and then come back, it will show the errors again
+// $_SESSION['errors'] = $form->getErrors();
+// redirect('/login');
 
-$db = App::resolve(Database::class);
+//so using PRG with session flashing to handle this issue.
 
-// Check if user exists or not
-$user = $db->query("SELECT * FROM users WHERE email = ?", [$email])->fetch();
-
-if (! $user) {
-    $errors['body'] = "User does not exists. please register first.";
-    require base_path('views/login.view.php');
-    exit();
-}
-if (!password_verify($password, $user['password'])) {
-    $errors['password'] = "Invalid email or password.";
-    require base_path('views/login.view.php');
-    exit();
-}
-
-$_SESSION['user'] = ['email' => $email];
-
-header("Location: /");
-exit();
+// $_SESSION['_flash']['errors'] = $form->getErrors();
+Session::flash('errors', $form->getErrors());
+Session::flash('old', [
+    'email' => $email,
+]);
+redirect('/login');

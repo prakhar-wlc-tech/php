@@ -1,5 +1,7 @@
 <?php
 
+use Utility\Session;
+
 function dd($value)
 {
     echo "<pre>";
@@ -14,13 +16,13 @@ function base_path($path = '')
     return BASE_PATH . ltrim($path, '/');
 }
 
-function logout()
+
+function redirect($path){
+    header("Location: $path");
+    exit();
+}
+
+function getOld($key, $default = '')
 {
-    $_SESSION = [];
-
-    session_destroy();
-
-    $params = session_get_cookie_params();
-    
-    setcookie('PHPSESSID', '', time() - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+    return Session::get('old')[$key] ?? $default;
 }
