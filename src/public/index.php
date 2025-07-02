@@ -5,9 +5,10 @@ session_start(); // Start the session to use session variables if not then we wo
 const BASE_PATH = "/var/www/private/";
 
 require_once BASE_PATH . "utility/utility.php";
-
+require_once base_path('utility/ValidationException.php');
 require_once base_path('utility/Session.php');
 use Utility\Session;
+use Utility\ValidationException;
 Session::unflash();
 
 // require_once base_path("router/router.php");
@@ -67,9 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method'])) {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-require base_path(
-    $router->route($uri, $method)
-);
+try{
+    require base_path(
+        $router->route($uri, $method)
+    );
+}catch (ValidationException $e){
+    Session::flash('errors', $e->errors);
+    Session::flash('old', $e->old);
+    redirect($router->previousUrl());
+}
 
 
 //deleting flash session
