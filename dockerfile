@@ -12,3 +12,8 @@ RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
 # Install PDO MySQL driver
 RUN docker-php-ext-install pdo pdo_mysql
+
+# Install Composer
+RUN apt-get install -y unzip curl && \
+    curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
